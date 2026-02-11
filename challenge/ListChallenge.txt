@@ -1,0 +1,427 @@
+KATEGORI 1. INVOICE SYSTEM
+
+Tema. ISP & Keuangan
+
+1. Invoice Tetangga
+
+Difficulty. Easy
+Score. 50
+Flag. ITCLUB{invoice_idor_basic}
+
+Story
+
+Lu pelanggan ISP “FastNet City”.
+Setiap bulan user bisa cek tagihan internet.
+
+Lab Design
+
+Halaman:
+
+/login
+
+/dashboard
+
+/invoice?id=1
+
+Data:
+
+User punya ID numerik
+
+Invoice disimpan per user
+
+Konsep
+
+Server ambil invoice berdasarkan ID di URL, bukan identitas login.
+
+2. Invoice Divisi Kantor
+
+Difficulty. Medium
+Score. 75
+Flag. ITCLUB{predictable_invoice_id}
+
+Story
+
+Lu staff kantor. Website internal buat lihat invoice tiap divisi.
+
+Lab Design
+
+Halaman:
+
+/dashboard
+
+/invoice?inv_id=FIN-2024-001
+
+Data:
+
+Invoice ID pakai format predictable
+
+Konsep
+
+Identifier terlihat “acak”, tapi masih bisa ditebak.
+
+3. Arsip Invoice Lama
+
+Difficulty. Hard
+Score. 100
+Flag. ITCLUB{invoice_leak_via_redirect}
+
+Story
+
+Sistem keuangan lama. Invoice lama diakses lewat menu arsip.
+
+Lab Design
+
+Halaman:
+
+/archive
+
+redirect ke /invoice?old_id=
+
+Konsep
+
+Redirect bawa parameter sensitif tanpa validasi.
+
+KATEGORI 2. PROFILE MANAGEMENT
+
+Tema. Komunitas & Internal System
+
+4. Edit Profile Komunitas
+
+Difficulty. Easy
+Score. 50
+Flag. ITCLUB{profile_id_trust}
+
+Story
+
+Website komunitas fotografi kota.
+
+Lab Design
+
+Halaman:
+
+/profile
+
+/profile/edit?user_id=
+
+Konsep
+
+User ID ditentukan dari URL.
+
+5. Role Sekolah
+
+Difficulty. Medium
+Score. 75
+Flag. ITCLUB{role_controlled_by_client}
+
+Story
+
+Portal internal sekolah. Guru dan admin beda fitur.
+
+Lab Design
+
+Halaman:
+
+/profile/edit
+Request:
+
+parameter role=student
+
+Konsep
+
+Role dikirim dari client, bukan ditentukan server.
+
+6. HR Internal
+
+Difficulty. Hard
+Score. 100
+Flag. ITCLUB{missing_acl_in_flow}
+
+Story
+
+Dashboard HR perusahaan.
+
+Lab Design
+
+Halaman:
+
+/profile/step1
+
+/profile/step2
+
+/profile/confirm
+
+Konsep
+
+Satu step tidak cek hak akses.
+
+KATEGORI 3. ADDRESS SYSTEM
+
+Tema. E-commerce & Logistik
+
+7. Alamat Belanja
+
+Difficulty. Easy
+Score. 50
+Flag. ITCLUB{address_idor_basic}
+
+Story
+
+Toko online lokal.
+
+Lab Design
+
+Halaman:
+
+/address/add?user_id=
+
+Konsep
+
+Alamat dikaitkan langsung ke user_id dari URL.
+
+8. Order Nyasar
+
+Difficulty. Medium
+Score. 75
+Flag. ITCLUB{order_using_foreign_address}
+
+Story
+
+Website pesan makanan.
+
+Lab Design
+
+Halaman:
+
+/order
+Request:
+
+address_id=
+
+Konsep
+
+Ownership address tidak dicek.
+
+9. Riwayat Alamat
+
+Difficulty. Hard
+Score. 100
+Flag. ITCLUB{address_history_exposed}
+
+Story
+
+Website jasa pengiriman.
+
+Lab Design
+
+Halaman:
+
+/address/history?user_id=
+
+Konsep
+
+History data bisa diakses via parameter.
+
+KATEGORI 4. PASSWORD SYSTEM
+
+Tema. Forum & Portal
+
+10. Ganti Password Forum
+
+Difficulty. Easy
+Score. 50
+Flag. ITCLUB{password_change_id_trust}
+
+Story
+
+Forum diskusi warga kota.
+
+Lab Design
+
+Halaman:
+
+/change-password
+Request:
+
+user_id=
+
+Konsep
+
+Identitas user dikontrol client.
+
+11. Reset Alumni
+
+Difficulty. Medium
+Score. 75
+Flag. ITCLUB{missing_auth_on_reset}
+
+Story
+
+Portal alumni sekolah.
+
+Lab Design
+
+Endpoint:
+
+/reset-password
+
+Konsep
+
+Endpoint tidak cek sesi login.
+
+12. API Startup
+
+Difficulty. Hard
+Score. 100
+Flag. ITCLUB{api_access_control_fail}
+
+Story
+
+Dashboard startup.
+
+Lab Design
+
+Endpoint:
+
+/api/user/password
+
+Konsep
+
+API bisa diakses tanpa cek ownership.
+
+KATEGORI 5. MONEY TRANSFER
+
+Tema. Fintech Mini
+
+13. Dompet Kampus
+
+Difficulty. Easy
+Score. 50
+Flag. ITCLUB{client_trust_money}
+
+Story
+
+Dompet digital kampus.
+
+Lab Design
+
+Request:
+
+from_id
+
+to_id
+
+amount
+
+Konsep
+
+Server percaya data dari client.
+
+14. Koperasi Online
+
+Difficulty. Medium
+Score. 75
+Flag. ITCLUB{sender_not_verified}
+
+Story
+
+Koperasi simpan pinjam.
+
+Lab Design
+
+Sender ditentukan request.
+
+Konsep
+
+Tidak ada validasi pengirim.
+
+15. Bank Mini
+
+Difficulty. Hard
+Score. 100
+Flag. ITCLUB{broken_transfer_flow}
+
+Story
+
+Aplikasi bank digital.
+
+Lab Design
+
+Flow:
+
+verify
+
+confirm
+
+transfer
+
+Konsep
+
+Step bisa dilewati.
+
+KATEGORI 6. PRICE & LOGIC
+
+Tema. Subscription & Store
+
+16. Tiket Konser
+
+Difficulty. Easy
+Score. 50
+Flag. ITCLUB{price_from_client}
+
+Story
+
+Website tiket konser kota.
+
+Lab Design
+
+Request:
+
+price=
+
+Konsep
+
+Harga dikirim dari client.
+
+17. Cart Toko
+
+Difficulty. Medium
+Score. 75
+Flag. ITCLUB{cart_total_trust}
+
+Story
+
+Toko online umum.
+
+Lab Design
+
+Request:
+
+total_price
+
+Konsep
+
+Server percaya total dari client.
+
+18. Premium Gratis
+
+Difficulty. Hard
+Score. 100
+Flag. ITCLUB{logic_flaw_subscription}
+
+Story
+
+Website langganan streaming.
+
+Lab Design
+
+Request:
+
+plan
+
+promo
+
+price
+
+Konsep
+
+Business logic flaw.

@@ -1,0 +1,20 @@
+<!-- templates/event_detail.html -->
+{% extends "base.html" %}
+{% block content %}
+    <h1>Event: {{ event.name }}</h1>
+    <p><strong>Description:</strong> {{ event.description }}</p>
+    <p><strong>Actual Price:</strong> ${{ event.price }}</p>
+
+    <h2>Payment</h2>
+    <p>To pay for this event, you can use the form below. The price will be pre-filled, but you can try to tamper with it!</p>
+    <form method="POST" action="{{ url_for('pay') }}">
+        <input type="hidden" name="event_id" value="{{ event.id }}">
+        
+        <label for="amount">Amount to Pay:</label><br>
+        <!-- This is the vulnerable input. Users can change this value. -->
+        <input type="number" id="amount" name="amount" value="{{ event.price }}" required min="0" readonly><br>
+        
+        <button type="submit">Pay Now</button>
+    </form>
+    <p><a href="{{ url_for('dashboard') }}">Back to Dashboard</a></p>
+{% endblock %}

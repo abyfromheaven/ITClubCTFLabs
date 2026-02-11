@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Order{% endblock %}
+
+{% block content %}
+<div class="order-container">
+    <h2>Confirm Your Order</h2>
+
+    {% if flag %}
+    <div class="flag-message">
+        <h3>PENTING: Temuan Kerentanan!</h3>
+        <p>Anda berhasil memicu kerentanan IDOR. Flag Anda adalah:</p>
+        <div class="flag-box">
+            <code>{{ flag }}</code>
+        </div>
+        <p>Silakan laporkan temuan ini kepada tim keamanan. Sementara itu, order di bawah akan tetap diproses ke alamat yang dipilih (yang rentan).</p>
+    </div>
+    {% endif %}
+
+    <div class="order-details-card">
+        <h3>Product Details</h3>
+        <p><strong>Product:</strong> {{ product.name }}</p>
+        <p><strong>Price:</strong> {{ product.price }}</p>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+    </div>
+
+    <div class="shipping-address-card">
+        <h3>Shipping Address</h3>
+        <p>Your order will be shipped to the following address:</p>
+        <p><strong>Full Name:</strong> {{ address.full_name }}</p>
+        <p><strong>Street:</strong> {{ address.street }}</p>
+        <p><strong>City:</strong> {{ address.city }}</p>
+        <p><strong>Postal Code:</strong> {{ address.postal_code }}</p>
+        {% if target_user_id != g.user_id %}
+            <p class="warning-text"><strong>PERHATIAN:</strong> Alamat ini bukan milik akun Anda yang sedang login. Ini adalah alamat milik User ID: {{ target_user_id }}.</p>
+            <p class="warning-text">Ini adalah contoh dari Insecure Direct Object Reference (IDOR) dimana backend tidak memvalidasi ownership dari alamat yang digunakan.</p>
+        {% endif %}
+    </div>
+
+    <form action="{{ url_for('confirm_order') }}" method="post" class="confirm-order-form">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="hidden" name="target_user_id" value="{{ target_user_id }}"> {# Mengirim user_id yang didapat dari form sebelumnya (bisa jadi bukan user_id sendiri) #}
+        <button type="submit" class="btn btn-primary btn-confirm">Confirm Order</button>
+        <a href="{{ url_for('products_page') }}" class="btn btn-secondary btn-cancel">Cancel Order</a>
+    </form>
+</div>
+{% endblock %}

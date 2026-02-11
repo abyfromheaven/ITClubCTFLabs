@@ -1,0 +1,48 @@
+<!-- templates/dashboard.html -->
+{% extends "base.html" %}
+{% block content %}
+    <h1>Welcome, {{ username }}!</h1>
+    <p>Your current balance: <strong>${{ balance }}</strong></p>
+
+    <h2>Available Events</h2>
+    {% if events %}
+        {% for event in events %}
+            <div class="event-card">
+                <h3><a href="{{ url_for('event_detail', event_id=event.id) }}">{{ event.name }}</a></h3>
+                <p>{{ event.description }}</p>
+                <p class="price">Price: ${{ event.price }}</p>
+                <a href="{{ url_for('event_detail', event_id=event.id) }}"><button>View Details & Pay</button></a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No events available at the moment.</p>
+    {% endif %}
+
+    <h2>Your Transactions</h2>
+    {% if transactions %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event</th>
+                    <th>Paid Amount</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.id }}</td>
+                        <td>{{ transaction.event_name }}</td>
+                        <td>${{ transaction.paid_amount }}</td>
+                        <td>{{ transaction.status }}</td>
+                        <td>{{ transaction.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no transactions yet.</p>
+    {% endif %}
+{% endblock %}

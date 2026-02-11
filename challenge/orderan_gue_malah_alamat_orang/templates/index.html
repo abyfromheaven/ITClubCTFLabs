@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Club Tech Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="user-menu">
+            <div id="userInfo" class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="usernameDisplay"></span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+        <h1><i class="fas fa-laptop-code"></i> IT Club Tech Store</h1>
+        <p>Toko online terdepan untuk peralatan IT, Teknologi, dan Keamanan Siber</p>
+    </header>
+
+    <div class="container">
+        <div id="appMessageDisplay" class="app-message-display" style="display: none;"></div>
+        <!-- Login Form -->
+        <div id="login" class="login-form">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">Selamat Datang di IT Club Tech Store</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nama Pengguna:</label>
+                    <input type="text" id="username" required placeholder="Masukkan nama pengguna Anda">
+                </div>
+                <div class="form-group">
+                    <label for="password">Kata Sandi:</label>
+                    <input type="password" id="password" required placeholder="Masukkan kata sandi Anda">
+                </div>
+                <button type="submit" style="width: 100%; margin-top: 20px;">
+                    <i class="fas fa-sign-in-alt"></i> Masuk ke Toko
+                </button>
+            </form>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="mainContent" style="display: none;">
+            <!-- Navigation Menu -->
+            <div class="nav-menu">
+                <button class="nav-btn" onclick="showSection('products')">
+                    <i class="fas fa-store"></i> Belanja Produk
+                </button>
+                <button class="nav-btn" onclick="showSection('orderHistory')">
+                    <i class="fas fa-history"></i> Riwayat Pesanan
+                </button>
+            </div>
+
+            <!-- Product List -->
+            <div id="products" class="product-list">
+                <div id="welcomeMessage" class="welcome">
+                    <h2>Selamat Datang di IT Club Tech Store!</h2>
+                    <p>Temukan peralatan IT, pentesting, dan komponen rakitan terbaik dengan harga kompetitif</p>
+                </div>
+                
+                <h2 style="text-align: center; margin-bottom: 10px; color: #333;">Jelajahi Produk Kami</h2>
+                
+                <!-- Category Filter -->
+                <div class="category-filter">
+                    <button class="active" onclick="filterProducts('all', this)">Semua Produk</button>
+                    <button data-category="pentesting" onclick="filterProducts('pentesting', this)">Pentesting</button>
+                    <button data-category="pc-build" onclick="filterProducts('pc-build', this)">Rakitan PC</button>
+                    <button data-category="iot" onclick="filterProducts('iot', this)">IoT</button>
+                    <button data-category="security" onclick="filterProducts('security', this)">Keamanan</button>
+                    <button data-category="programming" onclick="filterProducts('programming', this)">Programming</button>
+                    <button data-category="networking" onclick="filterProducts('networking', this)">Networking</button>
+                    <!-- Kategori lain seperti software/accessories tidak ada di data produk app.py -->
+                </div>
+                
+                <div id="productCount" class="product-count"></div>
+                
+                <div class="product-grid" id="productGrid">
+                    <!-- Products will be loaded dynamically by JavaScript -->
+                </div>
+            </div>
+
+
+
+            <!-- Order History -->
+            <div id="orderHistory" class="order-history">
+                <div class="welcome" style="margin-bottom: 20px;">
+                    <h2><i class="fas fa-history"></i> Riwayat Pesanan</h2>
+                    <p>Lihat semua pesanan yang telah Anda buat</p>
+                </div>
+                
+                <div id="historyContent">
+                    <table class="order-history-table">
+                        <thead>
+                            <tr>
+                                <th>No. Pesanan</th>
+                                <th>Tanggal</th>
+                                <th>Produk</th>
+                                <th>Harga</th>
+                                <th>Alamat Pengiriman</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderHistoryBody">
+                            <!-- Order history will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div id="emptyHistory" class="empty-history" style="display: none;">
+                        <i class="fas fa-history"></i>
+                        <h3>Belum ada riwayat pesanan</h3>
+                        <p>Pesan produk pertama Anda untuk melihat riwayat di sini</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Form -->
+            <div id="order" class="order-form">
+                <div class="welcome" style="margin-bottom: 20px;">
+                    <h2><i class="fas fa-shopping-cart"></i> Detail Pemesanan</h2>
+                    <p>Lengkapi informasi pengiriman untuk melanjutkan</p>
+                </div>
+                
+                <div id="flagMessageDiv" class="flag-message" style="display: none;">
+                    <!-- Flag message will be inserted here if IDOR is triggered -->
+                </div>
+
+                <div id="orderItemDisplay" style="font-weight: 500; font-size: 1.3em; background: #f0f4ff; padding: 20px; border-radius: 10px; margin-bottom: 30px; text-align: center;">
+                    <!-- Order details will be inserted here -->
+                </div>
+                
+                <div id="orderAddressWarning" class="warning-text" style="display: none; margin-bottom: 20px;"></div>
+
+                <div class="form-group">
+                    <label for="orderAddressInput"><i class="fas fa-map-marker-alt"></i> Alamat Pengiriman Lengkap:</label>
+                    <textarea id="orderAddressInput" rows="4" required placeholder="Masukkan alamat lengkap pengiriman (nama jalan, nomor rumah, kota, kode pos)..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="orderPhoneInput"><i class="fas fa-phone"></i> Nomor Telepon:</label>
+                    <input type="tel" id="orderPhoneInput" required placeholder="Masukkan nomor telepon aktif">
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="checkout-btn" onclick="checkout()">
+                        <i class="fas fa-check-circle"></i> LANJUT KE PEMBAYARAN
+                    </button>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="backToProducts()">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Produk
+                    </button>
+                </div>
+            </div>
+
+            <!-- Checkout Summary -->
+            <div id="checkout" class="checkout">
+                <div class="welcome" style="margin-bottom: 20px; background: linear-gradient(45deg, #00cc66, #00b359);">
+                    <h2><i class="fas fa-check-circle"></i> Pesanan Berhasil!</h2>
+                    <p>Pesanan Anda telah dikonfirmasi dan sedang diproses</p>
+                </div>
+                
+                <div class="checkout-info">
+                    <h3 style="color: #667eea; margin-top: 0;"><i class="fas fa-receipt"></i> Detail Pesanan</h3>
+                    <p><strong><i class="fas fa-user"></i> Nama Pengguna:</strong> <span id="receiverName"></span></p>
+                    <p><strong><i class="fas fa-id-card"></i> ID Akun:</strong> <span id="accountId"></span></p>
+                    <p><strong><i class="fas fa-phone"></i> Telepon:</strong> <span id="phoneNumber"></span></p>
+                    <p><strong><i class="fas fa-map-marker-alt"></i> Alamat Pengiriman:</strong> <span id="deliveryAddress"></span></p>
+                    <p><strong><i class="fas fa-box"></i> Barang:</strong> <span id="itemName"></span></p>
+                    <p><strong><i class="fas fa-tag"></i> Total Harga:</strong> <span class="price-highlight">Rp <span id="itemPrice"></span></span></p>
+                    <p><strong><i class="fas fa-hashtag"></i> No. Pesanan:</strong> <span id="orderNumber" style="font-weight: 900; color: #667eea;"><span id="orderNum"></span></span></p>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 2px dashed #ccc;">
+                        <p style="font-weight: 700; color: #333; font-size: 1.1em;">
+                            <i class="fas fa-shipping-fast"></i> Estimasi Pengiriman: 1-3 hari kerja
+                        </p>
+                        <p style="color: #666; margin-top: 10px;">
+                            Pesanan Anda akan segera diproses. Anda akan menerima notifikasi via WhatsApp/Email saat pesanan dikirim.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="showSection('products')" style="margin-right: 15px;">
+                        <i class="fas fa-shopping-bag"></i> Lanjut Belanja
+                    </button>
+                    <button class="btn" onclick="showSection('orderHistory')" style="background: linear-gradient(45deg, #ff9900, #ff6600);">
+                        <i class="fas fa-history"></i> Lihat Riwayat
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

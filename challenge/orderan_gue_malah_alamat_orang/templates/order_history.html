@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<div class="order-history-container">
+    <h2>Your Order History</h2>
+
+    {% if user_orders %}
+        <div class="order-list">
+            {% for order in user_orders %}
+            <div class="order-item-card">
+                <h3>Order #{{ order.order_id }}</h3>
+                <p><strong>Product:</strong> {{ order.product.name }}</p>
+                <p><strong>Price:</strong> {{ order.product.price }}</p>
+                <p><strong>Status:</strong> {{ order.status }}</p>
+                <div class="order-address-details">
+                    <h4>Shipping Address:</h4>
+                    <p><strong>To User ID:</strong> {{ order.shipping_to_user_id }} (Username: {{ users[order.shipping_to_user_id].username }})</p>
+                    <p><strong>Full Name:</strong> {{ order.shipping_address.full_name }}</p>
+                    <p><strong>Street:</strong> {{ order.shipping_address.street }}</p>
+                    <p><strong>City:</strong> {{ order.shipping_address.city }}</p>
+                    <p><strong>Postal Code:</strong> {{ order.shipping_address.postal_code }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have not placed any orders yet. <a href="{{ url_for('products_page') }}">Browse our products</a> to get started!</p>
+    {% endif %}
+</div>
+{% endblock %}

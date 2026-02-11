@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="header">
+    <h1>Daftar Anggota</h1>
+    <p>Daftar semua anggota yang terdaftar di sistem Wallet IT Club.</p>
+</div>
+
+<div class="card">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Saldo</th> {# New Saldo column header #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr id="user-{{ u.user_id }}"> {# Add id for JS targeting #}
+                    <td>{{ u.user_id }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>
+                        {% if u.user_id == target_user_id %}
+                            <span class="role-member">member</span> {# Tiara's role displayed as member #}
+                        {% elif u.role == "member" %}
+                            <span class="role-member">{{ u.role }}</span>
+                        {% elif u.role == "treasurer" %}
+                            <span class="role-treasurer">{{ u.role }}</span>
+                        {% else %}
+                            <span class="role-custom">{{ u.role }}</span> {# For custom roles like Abiyan's #}
+                        {% endif %}
+                    </td>
+                    <td class="user-balance" data-user-id="{{ u.user_id }}">{{ "{:,.0f}".format(u.balance) }}</td> {# Display balance #}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function formatBalance(balance) {
+        return balance.toLocaleString('id-ID'); // Formats with Indonesian locale (e.g., 1.234.567)
+    }
+
+    function updateBalances() {
+        fetch('/api/balances')
+            .then(response => response.json())
+            .then(data => {
+                for (const userId in data) {
+                    const balance = data[userId];
+                    const balanceElement = document.querySelector(`.user-balance[data-user-id="${userId}"]`);
+                    if (balanceElement) {
+                        balanceElement.textContent = formatBalance(balance);
+                    }
+                }
+            })
+            .catch(error => console.error('Error fetching balances:', error));
+    }
+
+    // Initial update
+    updateBalances();
+
+    // Update every 3 seconds
+    setInterval(updateBalances, 3000); 
+</script>
+{% endblock %}

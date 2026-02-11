@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Order Success{% endblock %}
+
+{% block content %}
+<div class="order-success-container">
+    <h2>Order Placed Successfully!</h2>
+    <p>Terima kasih telah berbelanja di IT Club Tech Store.</p>
+    <p>Order Anda telah berhasil ditempatkan dan akan segera diproses.</p>
+    <div class="order-success-actions">
+        <a href="{{ url_for('order_history') }}" class="btn btn-primary">View Order History</a>
+        <a href="{{ url_for('products_page') }}" class="btn btn-secondary">Continue Shopping</a>
+    </div>
+</div>
+{% endblock %}

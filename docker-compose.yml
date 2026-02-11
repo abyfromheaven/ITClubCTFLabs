@@ -1,0 +1,49 @@
+services:
+  # --- BAGIAN CTFD ---
+  ctfd:
+    build: ./CTFd # Pastikan Anda sudah git clone CTFd ke folder ini
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
+      - REDIS_URL=redis://cache:6379
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: mariadb:10.11
+    environment:
+      - MYSQL_DATABASE=ctfd
+      - MYSQL_USER=ctfd
+      - MYSQL_PASSWORD=ctfd
+      - MYSQL_ROOT_PASSWORD=ctfd
+
+  cache:
+    image: redis:4
+
+  # --- BAGIAN 4 LAB CTF ---
+  lab1:
+    build: ./challenge/admin_ISPnya_lagi_ngantuk
+    ports:
+      - "5001:5000" # Diakses di port 5001
+
+  lab2:
+    build: ./challenge/BayarSeiklhasnya
+    ports:
+      - "5002:5000" # Diakses di port 5002
+
+  lab3:
+    build: ./challenge/DompetTanpaPemilik
+    ports:
+      - "5003:5000" # Diakses di port 5003
+
+  lab4:
+    build: ./challenge/orderan_gue_malah_alamat_orang
+    ports:
+      - "5004:5000" # Diakses di port 5004
+
+  lab5:
+    build: ./challenge/sistem_lupa_siapa_yang_login
+    ports:
+      - "5005:5000" # Diakses di port 5005

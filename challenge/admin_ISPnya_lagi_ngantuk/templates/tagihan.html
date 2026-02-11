@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Tagihan - ITClubNet</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            padding: 40px 60px;
+            text-align: left;
+            max-width: 700px;
+            margin: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .detail-item {
+            margin-bottom: 15px;
+        }
+        .detail-item strong {
+            display: inline-block;
+            width: 150px;
+            color: #34495e;
+        }
+        .description {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 5px solid #3498db;
+        }
+        .description p {
+            margin: 0;
+            font-style: italic;
+            color: #555;
+        }
+        .flag {
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #95a5a6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #7f8c8d;
+        }
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detail Tagihan ITClubNet</h1>
+        
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+            <div style="text-align: center;">
+                <a href="/" class="back-button">Kembali ke Beranda</a>
+            </div>
+        {% else %}
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ customer.foto_profil }}" alt="Foto Profil {{ customer.nama }}" 
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #3498db;">
+            </div>
+            <div class="detail-item">
+                <strong>ID Pelanggan:</strong> {{ customer_id }}
+            </div>
+            <div class="detail-item">
+                <strong>Nama Pelanggan:</strong> {{ customer.nama }}
+            </div>
+            <div class="detail-item">
+                <strong>Paket Internet:</strong> {{ customer.paket }}
+            </div>
+            <div class="detail-item">
+                <strong>Total Tagihan:</strong> {{ customer.total_tagihan }}
+            </div>
+            <div class="detail-item">
+                <strong>Status Pembayaran:</strong> {{ customer.status_pembayaran }}
+            </div>
+
+            <h2 style="color: #2c3e50; font-size: 1.5em; margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Profil Pelanggan</h2>
+            <div class="detail-item">
+                <strong>Alamat:</strong> {{ customer.profil.alamat }}
+            </div>
+            <div class="detail-item">
+                <strong>Nomor Telepon:</strong> {{ customer.profil.nomor_telepon }}
+            </div>
+            <div class="detail-item">
+                <strong>Tanggal Bergabung:</strong> {{ customer.profil.tanggal_bergabung }}
+            </div>
+            <div class="detail-item">
+                <strong>Jumlah Perangkat:</strong> {{ customer.profil.jumlah_perangkat }}
+            </div>
+
+            <div class="description">
+                <strong>Deskripsi Pelanggan:</strong>
+                <p>{{ customer.deskripsi }}</p>
+            </div>
+            
+            {% if customer_id == 1337 and customer.flag %}
+                <div class="flag">
+                    Flag: {{ customer.flag }}
+                </div>
+            {% endif %}
+
+            <div style="text-align: center;">
+                <a href="/" class="back-button">Kembali ke Beranda</a>
+            </div>
+        {% endif %}
+    </div>
+    <footer>
+        &copy; ITClubNet Internal System
+    </footer>
+</body>
+</html>

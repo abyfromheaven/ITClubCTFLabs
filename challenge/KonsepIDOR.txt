@@ -1,0 +1,20 @@
+nggak deh, dari yang gua liat kurang cocok semua. tapi untuk VulnLab Yavuzlar ini masih cocok
+
+1. URL ID Parameter Manipulation
+terutama pada Invoices, ini tuh cuma ganti ganti id di parameter url terus halaman invoice user bakal berubah sesuai id yang di input
+
+2. Price Manipulation
+ini tuh sederhana banget, ceritanya ada website beli tiket harganya 10$ dan saldo user $1000 dolar. nah disini kita bisa manipulasi atau ubah ubah harga tiket melalui request user lewat burpsuite, di requestnya terlihat ada amount harga ticket nya 10, dan ini bisa diubah.
+
+3. Changing Password
+ini juga sederhana banget, dimana ini tuh seperti fitur change password, tpi saat user ganti password dan requestnya di tahan di burpsuite, maka akan kelihatan password dan user id nya, dari user id ini kita bisa mengganti password orang lain.
+di videonya user name kita adalah sebagai christoper, tapi saat ubah user id jadi 2 di burpsuite, yang terganti malah passwordnya piere
+
+4. Money Transfer
+c
+
+5.Address Entry
+ini konsepnya mirip dengan changing password, kita bisa update alamat milik kita dan ubah alamat orang lain melalui id di burpsuite. jadi awalnya user diminta untuk tambahkan alamatnya dulu, baru bisa order gitu, dan ketika order lalu requestnya di tangkap oleh burpsuite, kita bisa ubah id user yang otomatis ordernya pindah ke user lain, sekaligus kita bisa lihat alamat dari user lain karena ketika klik order akan muncul alamat yang akan dikirim
+
+6. Edit Profile 
+jadi disini tuh ketika user klik "edit profile", requestnya di intercept dulu ke burpsuite, terus bakal keliatan user id, maka kita bisa ubah user idnya, saat diubah kita masuk ke halaman edit profile mmilik user lain.

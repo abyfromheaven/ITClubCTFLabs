@@ -1,0 +1,25 @@
+<!-- templates/payment_status.html -->
+{% extends "base.html" %}
+{% block content %}
+    <h1>Payment Status</h1>
+    {% if status == 'success' %}
+        <div class="flash success">
+            <p>Your payment for <strong>{{ event_name }}</strong> was successful!</p>
+            <p>You paid: <strong>${{ paid_amount }}</strong></p>
+            <p>Actual event price: <strong>${{ actual_price }}</strong></p>
+            <p>Your new balance is: <strong>${{ new_balance }}</strong></p>
+
+            {% if flag %}
+                <h2>Congratulations! Here is your flag:</h2>
+                <p><code>{{ flag }}</code></p>
+            {% else %}
+                <p>The transaction was processed. Try to tamper with the amount to get the flag!</p>
+            {% endif %}
+        </div>
+    {% elif status == 'failed' %}
+        <div class="flash danger">
+            <p>Payment Failed: {{ message }}</p>
+        </div>
+    {% endif %}
+    <p><a href="{{ url_for('dashboard') }}">Back to Dashboard</a></p>
+{% endblock %}

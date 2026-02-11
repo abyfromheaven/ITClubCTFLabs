@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Products{% endblock %}
+
+{% block content %}
+<div class="products-header">
+    <h2>Our Latest Products</h2>
+    <p>Pilih produk yang Anda inginkan dan pesan sekarang!</p>
+</div>
+
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ product.image }}" alt="{{ product.name }}" class="product-image">
+        <div class="product-card-content">
+            <h3>{{ product.name }}</h3>
+            <div class="product-price">{{ product.price }}</div>
+            <p class="product-description">{{ product.description }}</p>
+            <form action="{{ url_for('order') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            {# 
+                INI ADALAH BAGIAN KRUSIAL UNTUK VULNERABILITY IDOR!
+                Secara default, ini akan mengirimkan user_id dari user yang login.
+                Namun, attacker dapat mengubah nilai 'user_id' ini melalui proxy/Burp Suite
+                untuk memesan ke alamat user lain.
+            #}
+            <input type="hidden" name="user_id" value="{{ g.user_id }}">
+            <button type="submit" class="btn btn-order">Order Now</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

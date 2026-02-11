@@ -1,0 +1,4 @@
+Nama Challenge: orderan  gue, malah alamat orang
+Difficulty: Easy-Medium
+Poin: 200
+Flag: ITCLUB{0RD3R_NY4S4R_K4R3NA4_1D0R}

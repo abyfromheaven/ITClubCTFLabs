@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Profil - {{ user.username }}{% endblock %}
+
+{% block content %}
+    <h2>Profil Pengguna</h2>
+    <p>Halo, <strong>{{ user.username }}</strong>!</p>
+    
+    <p>Ini adalah halaman profil Anda. Tidak banyak yang bisa dilihat di sini, tetapi setidaknya Anda tahu sudah berhasil login.</p>
+
+    {# --- KONDISI TAMPILKAN FLAG --- #}
+    {# Flag hanya ditampilkan jika variabel show_flag bernilai True #}
+    {# Variabel ini di-set di backend hanya jika user yang login bukan 'abiyan' #}
+    {% if show_flag %}
+        <div class="flag-box">
+            <h4>🎉 Selamat! Anda berhasil! 🎉</h4>
+            <p>Anda berhasil login sebagai akun lain. Ini membuktikan adanya celah keamanan yang bisa dieksploitasi.</p>
+            <p>Berikut adalah flagnya:</p>
+            <p><strong><code>{{ flag }}</code></strong></p>
+        </div>
+    {% endif %}
+
+    <hr style="margin-top: 30px;">
+    
+    <a href="{{ url_for('change_password') }}" class="btn">Ganti Password</a>
+    <a href="{{ url_for('logout') }}" class="btn" style="background-color: #dc3545;">Logout</a>
+{% endblock %}
