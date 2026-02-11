@@ -441,6 +441,10 @@ def api_manage_address():
 def api_order():
     data = request.json
     product_id = data.get('product_id')
+    selected_product = next((p for p in products if p['id'] == product_id), None)
+
+    if not selected_product:
+        return jsonify({"status": "error", "message": "Product not found."}), 404
     
     # *** VULNERABILITY HERE (IDOR) ***
     # Backend mengambil user_id dari request JSON, BUKAN dari session user yang login.
@@ -455,10 +459,20 @@ def api_order():
         return jsonify({"status": "error", "message": "Invalid user_id format."}), 400
     # *********************************
 
-    selected_product = next((p for p in products if p['id'] == product_id), None)
-
-    if not selected_product:
-        return jsonify({"status": "error", "message": "Product not found."}), 404
+    flag_message = None
+    # 10. FLAG LOGIC
+    # Jika user login adalah haykal (id 6) DAN user_id di request BUKAN 6, tampilkan flag.
+    if g.user_id == 6 and target_user_id_from_form != 6:
+        flag_message = "ITCLUB{1D0R_P4D4_0RD3R_4DDR3S5}"
+        # Jika flag terpicu, kita akan langsung mengembalikan respons sukses dengan flag
+        # Ini agar flag selalu muncul tanpa terhalang oleh pengecekan alamat
+        return jsonify({
+            "status": "success",
+            "product": selected_product, # selected_product sudah terdefinisi di sini
+            "shipping_address": addresses.get(target_user_id_from_form), # Tetap coba ambil alamat jika ada
+            "target_user_id": target_user_id_from_form,
+            "flag": flag_message
+        })
     
     # Ambil alamat menggunakan user_id yang didapat dari form (VULNERABLE)
     shipping_address = addresses.get(target_user_id_from_form)
@@ -470,12 +484,6 @@ def api_order():
             "message": f"User ID {target_user_id_from_form} does not have a registered address.",
             "code": "TARGET_USER_NO_ADDRESS" 
         }), 400
-
-    flag_message = None
-    # 10. FLAG LOGIC
-    # Jika user login adalah haykal (id 6) DAN user_id di request BUKAN 6, tampilkan flag.
-    if g.user_id == 6 and target_user_id_from_form != 6:
-        flag_message = "ITCLUB{1D0R_P4D4_0RD3R_4DDR3S5}"
 
     return jsonify({
         "status": "success",
