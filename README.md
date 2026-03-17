@@ -53,7 +53,7 @@ Pastikan Anda sudah menginstal **Docker** dan **Docker Compose** di komputer And
 
 1. **Clone Repositori**
    ```bash
-   git clone https://github.com/username/ITClubCTFLabs.git
+   git clone [https://github.com/username/ITClubCTFLabs.git](https://github.com/abyfromheaven/ITClubCTFLabs.git)
    cd ITClubCTFLabs
    ```
 
