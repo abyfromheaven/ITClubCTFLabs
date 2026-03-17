@@ -5,7 +5,7 @@
 ![Vulnerability](https://img.shields.io/badge/Focus-IDOR--%26--Logic--Flaw-orange?style=for-the-badge)
 ![School](https://img.shields.io/badge/SMK-1--TRIPLE--J-green?style=for-the-badge)
 
-Selamat datang di **IT Club CTF Labs**! Repositori ini berisi kumpulan lab praktik *Capture The Flag* (CTF) yang dirancang khusus untuk anggota **IT Club SMK 1 TRIPLE "J"**. Fokus utama dari lab ini adalah memahami dan mengeksploitasi kerentanan **IDOR (Insecure Direct Object Reference)** dan **Logic Flaws**.
+Selamat datang di **IT Club CTF Labs**! Repositori ini berisi kumpulan lab praktik *Capture The Flag* (CTF) yang dirancang khusus untuk anggota **IT Club SMK 1 TRIPLE "J"**.
 
 ---
 
